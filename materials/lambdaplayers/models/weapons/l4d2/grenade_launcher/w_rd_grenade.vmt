@@ -1,0 +1,10 @@
+VertexLitGeneric
+{
+	$baseTexture "lambdaplayers\models\weapons\l4d2\grenade_launcher\w_rd_grenade"
+	$bumpmap "lambdaplayers\models\weapons\l4d2\grenade_launcher\w_rd_grenade_normal"
+	
+	$phong 1
+	$phongexponent 120
+	$phongfresnelranges "[1 0.5 8]"
+	$phongboost 5
+}

@@ -1,0 +1,15 @@
+VertexLitGeneric
+{
+	$baseTexture "lambdaplayers\models\weapons\l4d2\rifle_m16a2\m16a2"
+	$bumpmap "effects/flat_normal"
+	
+	$halflambert 1
+	$color2 "[ 2 2 2 ]"
+	$ambientocclusion 1
+
+	$phong 1
+	$phongboost 1
+	$phongexponent 10
+	$phongfresnelranges "[.5 .5 1.5]"
+	$BASEMAPLUMINANCEPHONGMASK 1
+}

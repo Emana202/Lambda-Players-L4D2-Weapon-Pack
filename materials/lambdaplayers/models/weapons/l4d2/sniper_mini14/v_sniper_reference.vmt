@@ -1,0 +1,18 @@
+VertexLitGeneric
+{
+	$baseTexture "lambdaplayers\models\weapons\l4d2\sniper_mini14\V_Sniper_Reference"
+	$bumpmap "effects/flat_normal"
+
+	$phong 1
+	$phongboost 3
+	$phongexponentTexture "lambdaplayers\models\weapons\l4d2\sniper_mini14\V_Sniper_Reference"
+	$phongfresnelranges "[.1 .3 .1]"
+	$BASEMAPLUMINANCEPHONGMASK 1
+	
+	$color2 "[1.1 1.1 1.1]"
+	$halflambert 1
+	$phongalbedotint 1
+
+	$basemapalphaenvmapmask 1
+	$envmap env_cubemap
+}
