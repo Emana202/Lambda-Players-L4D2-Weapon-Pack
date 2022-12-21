@@ -1,5 +1,5 @@
-local fireDamageTbl = { 12, 14 }
-local fireRateTbl = { 0.2, 0.4 }
+local fireDamageTbl = { 11, 13 }
+local fireRateTbl = { 0.175, 0.35 }
 local deploySnds = {
     { 0, "lambdaplayers/weapons/l4d2/pistol/gunother/pistol_deploy_1.mp3" },
     { 0.2, "lambdaplayers/weapons/l4d2/pistol/gunother/pistol_slideback_1.mp3" },
@@ -18,7 +18,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
         clip = 15,
         islethal = true,
         attackrange = 1500,
-        keepdistance = 500,
+        keepdistance = 650,
 
         reloadtime = 2.0,
         reloadanim = ACT_HL2MP_GESTURE_RELOAD_PISTOL,
@@ -33,7 +33,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
         OnEquip = function( self, wepent )
             wepent.L4D2Data = {}
             wepent.L4D2Data.Damage = fireDamageTbl
-            wepent.L4D2Data.Spread = 0.085
+            wepent.L4D2Data.Spread = 0.08
             wepent.L4D2Data.Sound = "lambdaplayers/weapons/l4d2/pistol/gunfire/pistol_fire.mp3"
             wepent.L4D2Data.RateOfFire = fireRateTbl
             wepent.L4D2Data.Animation = ACT_HL2MP_GESTURE_RANGE_ATTACK_PISTOL

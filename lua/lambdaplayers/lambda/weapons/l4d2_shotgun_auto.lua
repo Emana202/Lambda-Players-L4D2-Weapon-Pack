@@ -1,8 +1,8 @@
 local IsValid = IsValid
 local ipairs = ipairs
 
-local fireDamageTbl = { 8, 10 }
-local fireRateTbl = { 0.35, 0.5 }
+local fireDamageTbl = { 7, 9 }
+local fireRateTbl = { 0.3, 0.5 }
 local deploySnds = {
     { 0, "lambdaplayers/weapons/l4d2/shotgun_auto/gunother/autoshotgun_deploy_1.mp3" }
 }
@@ -44,13 +44,13 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
         OnEquip = function( self, wepent )
             wepent.L4D2Data = {}
             wepent.L4D2Data.Damage = fireDamageTbl
-            wepent.L4D2Data.Spread = 0.166
+            wepent.L4D2Data.Spread = 0.14
             wepent.L4D2Data.Sound = "lambdaplayers/weapons/l4d2/shotgun_auto/gunfire/auto_shotgun_fire_1.mp3"
             wepent.L4D2Data.RateOfFire = fireRateTbl
             wepent.L4D2Data.Animation = ACT_HL2MP_GESTURE_RANGE_ATTACK_SHOTGUN
             wepent.L4D2Data.EjectShell = "ShotgunShellEject"
             wepent.L4D2Data.Pellets = 11
-            wepent.L4D2Data.CrouchedSpreadScale = 0.8
+            wepent.L4D2Data.CrouchedSpreadScale = 0.9
             wepent.L4D2Data.DeploySound = deploySnds
 
             LAMBDA_L4D2:InitializeWeapon( self, wepent )

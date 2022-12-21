@@ -3,7 +3,7 @@ local ipairs = ipairs
 local EffectData = EffectData
 local util_Effect = util.Effect
 
-local fireDamageTbl = { 8, 10 }
+local fireDamageTbl = { 7, 9 }
 local fireRateTbl = { 0.8, 1.2 }
 local deploySnds = {
     { 0, "lambdaplayers/weapons/l4d2/shotgun_pump/gunother/shotgun_deploy_1.mp3" }
@@ -18,7 +18,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
     l4d2_shotgun_pump = {
         model = "models/lambdaplayers/weapons/l4d2/w_shotgun_pump.mdl",
         origin = "Left 4 Dead 2",
-        prettyname = "Pumpshotgun",
+        prettyname = "Pump Shotgun",
         holdtype = "shotgun",
         killicon = "lambdaplayers/killicons/icon_l4d2_shotgun_pump",
         bonemerge = true,
@@ -45,13 +45,13 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
         OnEquip = function( self, wepent )
             wepent.L4D2Data = {}
             wepent.L4D2Data.Damage = fireDamageTbl
-            wepent.L4D2Data.Spread = 0.15
+            wepent.L4D2Data.Spread = 0.133
             wepent.L4D2Data.Sound = "lambdaplayers/weapons/l4d2/shotgun_pump/gunfire/shotgun_fire_1.mp3"
             wepent.L4D2Data.RateOfFire = fireRateTbl
             wepent.L4D2Data.Animation = ACT_HL2MP_GESTURE_RANGE_ATTACK_SHOTGUN
             wepent.L4D2Data.EjectShell = false
             wepent.L4D2Data.Pellets = 10
-            wepent.L4D2Data.CrouchedSpreadScale = 0.8
+            wepent.L4D2Data.CrouchedSpreadScale = 0.9
             wepent.L4D2Data.DeploySound = deploySnds
 
             LAMBDA_L4D2:InitializeWeapon( self, wepent )

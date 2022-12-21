@@ -1,0 +1,16 @@
+VertexLitGeneric
+{
+	$baseTexture "lambdaplayers\models\weapons\l4d2\melee\pitchfork\pitchfork"
+	$bumpmap "lambdaplayers\models\weapons\l4d2\melee\pitchfork\pitchfork_normal"
+
+	$phong 1
+	$phongboost 4
+	$phongexponenttexture "lambdaplayers\models\weapons\l4d2\melee\pitchfork\pitchfork_exponent"
+	$phongalbedotint 1
+	$phongfresnelranges "[.1 .4 2]"
+
+	$basealphaenvmapmask 1
+	$envmapfresnel 1
+	$envmaptint "[.15 .15 .15]"
+	$envmap env_cubemap
+}

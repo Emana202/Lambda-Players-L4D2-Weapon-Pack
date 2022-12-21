@@ -6,27 +6,29 @@ local EffectData = EffectData
 local util_Effect = util.Effect
 local SpriteTrail = util.SpriteTrail
 local BlastDamage = util.BlastDamage
-local smokeColor = Color( 100, 100, 100, 125 )
+local smokeColor = Color( 100, 100, 100, 100 )
 
-local function GrenadeOnTouch( self )
+local function GrenadeOnTouch( self, ent )
+    local owner = self:GetOwner()
+    if ent == owner or !ent:IsSolid() or ent:GetSolidFlags() == FSOLID_VOLUME_CONTENTS then return end
+
     local projPos = self:GetPos()
+    local attacker = ( IsValid( owner ) and owner or self )
+    local inflictor = ( attacker == owner and ( IsValid( owner:GetWeaponENT() ) and owner:GetWeaponENT() or owner ) or self )
+    BlastDamage( inflictor, attacker, projPos, 200, 100 )
 
-    local effectData = EffectData()
-    effectData:SetOrigin( projPos )
-    effectData:SetFlags( 4 )
-    util_Effect( "Explosion", effectData )
+    if IsFirstTimePredicted() then
+        local effectData = EffectData()
+        effectData:SetOrigin( projPos )
+        effectData:SetFlags( 4 )
+        util_Effect( "Explosion", effectData )
 
-    effectData = EffectData()
-    effectData:SetOrigin( projPos )
-    util_Effect( "HelicopterMegaBomb", effectData )
+        effectData = EffectData()
+        effectData:SetOrigin( projPos )
+        util_Effect( "HelicopterMegaBomb", effectData )
+    end
 
     self:EmitSound( "lambdaplayers/weapons/l4d2/grenade_launcher/grenadefire/grenade_launcher_explode_" .. random( 1, 2 ) .. ".mp3", 140, nil, nil, CHAN_STATIC )
-    
-    local owner = self:GetOwner()
-    local attacker = ( IsValid( owner ) and owner or self )
-    local inflictor = ( IsValid( owner ) and ( IsValid( owner:GetWeaponENT() ) and owner:GetWeaponENT() or owner ) or self )
-    BlastDamage( inflictor, attacker, projPos, 200, 150 )
-
     self:Remove()
 end
 
@@ -54,11 +56,17 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             { 1.95, "lambdaplayers/weapons/l4d2/grenade_launcher/grenadeother/grenade_launcher_actionclosed.mp3" }
         },
 
+        OnEquip = function( lambda, wepent )
+            wepent:EmitSound( "lambdaplayers/weapons/l4d2/grenade_launcher/grenadeother/grenade_launcher_deploy_1.mp3", 65, 100, 1, CHAN_ITEM )
+        end,
+
         callback = function( lambda, wepent, target )
             if lambda.l_Clip <= 0 then lambda:ReloadWeapon() return true end
-            
-            local attachData = wepent:GetAttachment( wepent:LookupAttachment( "muzzle" ) )
-            local velAng = ( ( target:GetPos() + Vector( 0, 0, lambda:GetRangeTo( target ) / 8 ) ) - attachData.Pos ):Angle()
+
+            local muzzleData = wepent:GetAttachment( wepent:LookupAttachment( "muzzle" ) )
+            local spawnPos = ( muzzleData.Pos + muzzleData.Ang:Forward() * 16 )
+
+            local velAng = ( ( target:GetPos() + Vector( 0, 0, lambda:GetRangeTo( target ) / 8 ) ) - spawnPos ):Angle()
             if lambda:GetForward():Dot( velAng:Forward() ) < 0.66 then lambda.l_WeaponUseCooldown = CurTime() + 0.1; return true end
 
             lambda.l_Clip = lambda.l_Clip - 1
@@ -72,16 +80,16 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
 
             local proj = ents_Create( "base_anim" )
             proj:SetModel( "models/lambdaplayers/weapons/l4d2/w_grenade_launcher_projectile.mdl" )
-            proj:SetPos( attachData.Pos + velAng:Forward() * 16 )
+            proj:SetPos( spawnPos )
             proj:SetOwner( lambda )
             proj:Spawn()
-            
+
             proj.Touch = GrenadeOnTouch
             proj:SetMoveType( MOVETYPE_FLYGRAVITY )
             proj:SetSolid( SOLID_BBOX )
             proj:SetAngles( velAng )
             proj:SetVelocity( velAng:Forward() * 1400 )
-            SpriteTrail( proj, 0, smokeColor, true, 12, 12, 1, 0.025, "trails/smoke" )
+            SpriteTrail( proj, 0, smokeColor, true, 8, 8, 1, 0.025, "trails/smoke" )
 
             return true
         end

@@ -1,0 +1,16 @@
+VertexLitGeneric
+{
+	$baseTexture "lambdaplayers\models\weapons\l4d2\melee\shovel\Shovel"
+	$bumpMap "lambdaplayers\models\weapons\l4d2\melee\shovel\Shovel_normal"
+
+	$phong 1
+	$phongboost 1
+	$phongexponentTexture "lambdaplayers\models\weapons\l4d2\melee\shovel\Shovel_exp"
+	$phongalbedotint 1
+	$phongfresnelranges "[1 2 .6]"
+
+	$basealphaenvmapmask 1
+	$envmapfresnel 1
+	$envmaptint "[.1 .1 .1]"
+	$envmap env_cubemap
+}

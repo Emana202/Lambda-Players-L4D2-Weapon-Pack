@@ -1,4 +1,4 @@
-local fireDamageTbl = { 14, 16 }
+local fireDamageTbl = { 11, 13 }
 local fireRateTbl = { 0.21, 0.35 }
 local deploySnds = {
     { 0, "lambdaplayers/weapons/l4d2/rifle_desert/gunother/rifle_deploy_1.mp3" },
@@ -18,7 +18,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
         clip = 60,
         islethal = true,
         attackrange = 1750,
-        keepdistance = 650,
+        keepdistance = 800,
 
         reloadtime = 3.33,
         reloadanim = ACT_HL2MP_GESTURE_RELOAD_AR2,

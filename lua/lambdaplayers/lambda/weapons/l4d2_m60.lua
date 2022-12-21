@@ -1,7 +1,10 @@
 local net = net
-local FrameTime = FrameTime
+local fireDamageTbl = { 20, 24 }
 
-local fireDamageTbl = { 25, 28 }
+local function OnM60Reload( self )
+    if self:GetWeaponName() == "l4d2_m60" then return end
+    self:OldReloadWeapon()
+end
 
 table.Merge( _LAMBDAPLAYERSWEAPONS, {
     l4d2_m60 = {
@@ -15,7 +18,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
         clip = 150,
         islethal = true,
         attackrange = 1500,
-        keepdistance = 400,
+        keepdistance = 550,
 
         OnEquip = function( self, wepent )
             wepent.L4D2Data = {}
@@ -28,31 +31,31 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             wepent.L4D2Data.MuzzleFlash = 7
             wepent.L4D2Data.IsReloadable = false
             wepent.L4D2Data.DeploySound = "lambdaplayers/weapons/l4d2/m60/gunother/rifle_deploy_1.mp3"
+            
+            self.OldReloadWeapon = self.ReloadWeapon
+            self.ReloadWeapon = OnM60Reload
 
             LAMBDA_L4D2:InitializeWeapon( self, wepent )
-            
-            local oldReload = self.ReloadWeapon
-            function self:ReloadWeapon()
-                if self:GetWeaponName() == "l4d2_m60" then return end
-                oldReload( self )
-            end
+        end,
+
+        OnUnequip = function( self, wepent )
+            self.ReloadWeapon = self.OldReloadWeapon
+            self.OldReloadWeapon = nil
         end,
 
         callback = function( self, wepent, target )
-            LAMBDA_L4D2:FireWeapon( self, wepent, target )
-
             if self.l_Clip <= 0 then 
-                self:SimpleTimer( FrameTime(), function() 
-                    net.Start( "lambdaplayers_createclientsidedroppedweapon" )
-                        net.WriteEntity( wepent )
-                        net.WriteVector( self:GetForward() * 3000 + self:GetUp() * 2500 )
-                        net.WriteVector( wepent:GetPos() )
-                        net.WriteVector( self:GetPhysColor() )
-                        net.WriteString( "l4d2_m60" )
-                    net.Broadcast()    
-                end )
+                net.Start( "lambdaplayers_createclientsidedroppedweapon" )
+                    net.WriteEntity( wepent )
+                    net.WriteVector( self:GetForward() * 3000 + self:GetUp() * 2500 )
+                    net.WriteVector( wepent:GetPos() )
+                    net.WriteVector( self:GetPhysColor() )
+                    net.WriteString( "l4d2_m60" )
+                net.Broadcast()    
 
-                self:SimpleTimer( FrameTime() * 2, function() self:SwitchToRandomWeapon() end )
+                self:SimpleTimer( 0, function() self:SwitchToRandomWeapon() end )
+            else
+                LAMBDA_L4D2:FireWeapon( self, wepent, target )
             end
 
             return true

@@ -1,0 +1,18 @@
+VertexLitGeneric
+{
+	$baseTexture "lambdaplayers\models\weapons\l4d2\melee\crowbar\crowbar_gold"
+	$bumpmap "lambdaplayers\models\weapons\l4d2\melee\crowbar\crowbar_normal"
+
+	$phong 1
+	$phongboost 20
+	$phongexponent 20
+	$phongexponenttexture "lambdaplayers\models\weapons\l4d2\melee\crowbar\crowbar_gold_tint"
+	$basemapluminancephongmask 1
+	$phongfresnelranges "[5 30 5]"
+	$phongalbedotint 1
+
+	$normalmapalphaenvmapmask 1
+	$envmap env_cubemap
+	$envmapfresnel 1
+	$envmaptint "[0.4 0.22 0.02]"
+}

@@ -1,4 +1,4 @@
-local fireDamageTbl = { 8, 9 }
+local fireDamageTbl = { 6, 8 }
 local deploySnds = {
     { 0, "lambdaplayers/weapons/l4d2/smg_uzi/gunother/smg_deploy_1.mp3" },
     { 0.33, "lambdaplayers/weapons/l4d2/smg_uzi/gunother/smg_slideback_1.mp3" },
@@ -17,7 +17,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
         clip = 50,
         islethal = true,
         attackrange = 1500,
-        keepdistance = 400,
+        keepdistance = 600,
 
         reloadtime = 2.233,
         reloadanim = ACT_HL2MP_GESTURE_RELOAD_PISTOL,

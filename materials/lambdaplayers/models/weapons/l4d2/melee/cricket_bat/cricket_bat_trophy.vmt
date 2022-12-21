@@ -1,0 +1,15 @@
+VertexLitGeneric
+{
+	$baseTexture "lambdaplayers\models\weapons\l4d2\melee\cricket_bat\cricket_bat_trophy"
+	$bumpmap "lambdaplayers\models\weapons\l4d2\melee\cricket_bat\cricket_bat_trophy_normal"
+
+	$phong 1
+	$phongboost 1
+	$phongexponent 1
+	$phongfresnelranges "[.1 .4 2]"
+
+	$normalmapalphaenvmapmask 1
+	$envmap env_cubemap
+	$envmapfresnel 1
+	$envmapFresnelMinMaxExp "[0 5 .4]"
+}
