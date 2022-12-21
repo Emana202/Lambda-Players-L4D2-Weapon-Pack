@@ -15,10 +15,6 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             wepent.L4D2Data = {}
             wepent.L4D2Data.Animation = ACT_HL2MP_GESTURE_RANGE_ATTACK_MELEE2
             wepent.L4D2Data.RateOfFire = { 0.7, 0.8 }
-            wepent.L4D2Data.Sound = {
-                "lambdaplayers/weapons/l4d2/melee/katana/katana_swing_miss1.mp3",
-                "lambdaplayers/weapons/l4d2/melee/katana/katana_swing_miss2.mp3"
-            }
             wepent.L4D2Data.HitDelay = 0.225
             wepent.L4D2Data.Range = 65
             wepent.L4D2Data.Damage = { 55, 65 }

@@ -76,8 +76,8 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             wepent.IsDeploying = true
             wepent.AttackTime = CurTime() + 2.5
 
-            wepent.IdleSound = CreateSound( wepent, "lambdaplayers/weapons/l4d2/melee/chainsaw/chainsaw_idle_lp_01.mp3" )
-            wepent.AttackSound = CreateSound( wepent, "lambdaplayers/weapons/l4d2/melee/chainsaw/chainsaw_high_speed_lp_01.mp3" )
+            wepent.IdleSound = CreateSound( wepent, "lambdaplayers/weapons/l4d2/melee/chainsaw/chainsaw_idle_lp_01.wav" )
+            wepent.AttackSound = CreateSound( wepent, "lambdaplayers/weapons/l4d2/melee/chainsaw/chainsaw_high_speed_lp_01.wav" )
 
             wepent:CallOnRemove( "LambdaChainsaw_KillSounds" .. wepent:EntIndex(), function() 
                 wepent:EmitSound( "lambdaplayers/weapons/l4d2/melee/chainsaw/chainsaw_die_01.mp3", 70 )

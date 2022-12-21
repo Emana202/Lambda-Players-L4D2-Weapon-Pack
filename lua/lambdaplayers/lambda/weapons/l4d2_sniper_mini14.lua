@@ -1,4 +1,4 @@
-local fireDamageTbl = { 26, 28 }
+local fireDamageTbl = { 24, 26 }
 local fireRateTbl = { 0.35, 0.5 }
 local deploySnds = {
     { 0, "lambdaplayers/weapons/l4d2/sniper_mini14/gunother/hunting_rifle_deploy_1.mp3" },
@@ -32,7 +32,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
         OnEquip = function( self, wepent )
             wepent.L4D2Data = {}
             wepent.L4D2Data.Damage = fireDamageTbl
-            wepent.L4D2Data.Spread = 0.075
+            wepent.L4D2Data.Spread = 0.08
             wepent.L4D2Data.Sound = "lambdaplayers/weapons/l4d2/sniper_mini14/gunfire/hunting_rifle_fire_1.mp3"
             wepent.L4D2Data.RateOfFire = fireRateTbl
             wepent.L4D2Data.Animation = ACT_HL2MP_GESTURE_RANGE_ATTACK_RPG

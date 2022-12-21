@@ -37,6 +37,10 @@ function LAMBDA_L4D2:InitializeWeapon( lambda, weapon, ignoreSkins )
     weapon:SetSkin( ( !ignoreSkins and skinCount > 1 ) and random( 0, skinCount - 1 ) or 0 )
 end
 
+local meleeSwingSounds = {
+    Sound( "lambdaplayers/weapons/l4d2/melee/melee_swing_1.mp3" ),
+    Sound( "lambdaplayers/weapons/l4d2/melee/melee_swing_2.mp3" )
+}
 local meleeHitSounds = {
     Sound( "lambdaplayers/weapons/l4d2/melee/hitsounds/zombie_blood_spray_01.mp3" ),
     Sound( "lambdaplayers/weapons/l4d2/melee/hitsounds/zombie_blood_spray_02.mp3" ),
@@ -49,8 +53,8 @@ function LAMBDA_L4D2:SwingMeleeWeapon( lambda, weapon, target )
     local swingAnim = weapon.L4D2Data.Animation
     if swingAnim then lambda:RemoveGesture( swingAnim ); lambda:AddGesture( swingAnim ) end
 
-    local swingSnd = weapon.L4D2Data.Sound
-    if swingSnd then 
+    local swingSnd = weapon.L4D2Data.Sound or meleeSwingSounds
+    if swingSnd != false then 
         if istable( swingSnd ) then swingSnd = swingSnd[ random( #swingSnd ) ] end
         weapon:EmitSound( swingSnd, 65, random( 96, 104 ), 1, CHAN_WEAPON ) 
     end
@@ -80,7 +84,7 @@ function LAMBDA_L4D2:SwingMeleeWeapon( lambda, weapon, target )
             dmginfo:SetInflictor( weapon )
             dmginfo:SetDamageType( weapon.L4D2Data.DamageType or DMG_SLASH )
             dmginfo:SetDamagePosition( tr.HitPos )
-            dmginfo:SetDamageForce( attackAng:Forward() * ( attackDmg * 50 ) )
+            dmginfo:SetDamageForce( attackAng:Forward() * ( attackDmg * ( weapon.L4D2Data.DamageForce or 50 ) ) )
             hitEntity:DispatchTraceAttack( dmginfo, tr )
 
             local hitSound = weapon.L4D2Data.HitSound

@@ -15,14 +15,11 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             wepent.L4D2Data = {}
             wepent.L4D2Data.Animation = ACT_HL2MP_GESTURE_RANGE_ATTACK_MELEE2
             wepent.L4D2Data.RateOfFire = { 0.8, 0.9 }
-            wepent.L4D2Data.Sound = {
-                "lambdaplayers/weapons/l4d2/melee/bat/bat_swing_miss1.mp3",
-                "lambdaplayers/weapons/l4d2/melee/bat/bat_swing_miss2.mp3"
-            }
             wepent.L4D2Data.HitDelay = 0.275
             wepent.L4D2Data.Range = 65
             wepent.L4D2Data.Damage = { 40, 50 }
             wepent.L4D2Data.DamageType = DMG_CLUB
+            wepent.L4D2Data.DamageForce = 75
             wepent.L4D2Data.HitSound = {
                 "lambdaplayers/weapons/l4d2/melee/bat/melee_cricket_bat_01.mp3",
                 "lambdaplayers/weapons/l4d2/melee/bat/melee_cricket_bat_02.mp3",
