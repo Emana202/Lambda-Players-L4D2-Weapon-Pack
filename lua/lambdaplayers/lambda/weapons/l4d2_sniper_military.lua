@@ -29,7 +29,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
         OnEquip = function( self, wepent )
             wepent.L4D2Data = {}
             wepent.L4D2Data.Damage = fireDamageTbl
-            wepent.L4D2Data.Spread = 0.08
+            wepent.L4D2Data.Spread = 0.066
             wepent.L4D2Data.Sound = "lambdaplayers/weapons/l4d2/sniper_military/gunfire/sniper_military_fire_1.mp3"
             wepent.L4D2Data.RateOfFire = fireRateTbl
             wepent.L4D2Data.Animation = ACT_HL2MP_GESTURE_RANGE_ATTACK_RPG

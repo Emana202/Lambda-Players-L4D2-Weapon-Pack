@@ -1,3 +1,12 @@
+local rofTbl = { 0.8, 0.9 }
+local dmgTbl = { 40, 50 }
+local dmgForceTbl = { Forward = 150, Right = -75, Up = 125 }
+local hitSndTbl = {
+    "lambdaplayers/weapons/l4d2/melee/bat/melee_cricket_bat_01.mp3",
+    "lambdaplayers/weapons/l4d2/melee/bat/melee_cricket_bat_02.mp3",
+    "lambdaplayers/weapons/l4d2/melee/bat/melee_cricket_bat_03.mp3"
+}
+
 table.Merge( _LAMBDAPLAYERSWEAPONS, {
     l4d2_melee_baseball_bat = {
         model = "models/lambdaplayers/weapons/l4d2/melee/w_baseball_bat.mdl",
@@ -14,17 +23,13 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
         OnEquip = function( self, wepent )
             wepent.L4D2Data = {}
             wepent.L4D2Data.Animation = ACT_HL2MP_GESTURE_RANGE_ATTACK_MELEE2
-            wepent.L4D2Data.RateOfFire = { 0.8, 0.9 }
+            wepent.L4D2Data.RateOfFire = rofTbl
             wepent.L4D2Data.HitDelay = 0.275
             wepent.L4D2Data.Range = 65
-            wepent.L4D2Data.Damage = { 40, 50 }
+            wepent.L4D2Data.Damage = dmgTbl
             wepent.L4D2Data.DamageType = DMG_CLUB
-            wepent.L4D2Data.DamageForce = 75
-            wepent.L4D2Data.HitSound = {
-                "lambdaplayers/weapons/l4d2/melee/bat/melee_cricket_bat_01.mp3",
-                "lambdaplayers/weapons/l4d2/melee/bat/melee_cricket_bat_02.mp3",
-                "lambdaplayers/weapons/l4d2/melee/bat/melee_cricket_bat_03.mp3"
-            }
+            wepent.L4D2Data.DamageForce = dmgForceTbl
+            wepent.L4D2Data.HitSound = hitSndTbl
 
             wepent:EmitSound( "lambdaplayers/weapons/l4d2/melee/melee_deploy_1.mp3", 60, 100, 1, CHAN_ITEM )
         end,

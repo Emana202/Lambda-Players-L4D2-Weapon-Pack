@@ -1,3 +1,11 @@
+local rofTbl = { 0.9, 1.1 }
+local dmgTbl = { 70, 75 }
+local hitSndTbl = {
+    "lambdaplayers/weapons/l4d2/melee/fireaxe/melee_axe_01.mp3",
+    "lambdaplayers/weapons/l4d2/melee/fireaxe/melee_axe_02.mp3",
+    "lambdaplayers/weapons/l4d2/melee/fireaxe/melee_axe_03.mp3"
+}
+
 table.Merge( _LAMBDAPLAYERSWEAPONS, {
     l4d2_melee_fireaxe = {
         model = "models/lambdaplayers/weapons/l4d2/melee/w_fireaxe.mdl",
@@ -14,15 +22,11 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
         OnEquip = function( self, wepent )
             wepent.L4D2Data = {}
             wepent.L4D2Data.Animation = ACT_HL2MP_GESTURE_RANGE_ATTACK_MELEE2
-            wepent.L4D2Data.RateOfFire = { 0.9, 1.1 }
+            wepent.L4D2Data.RateOfFire = rofTbl
             wepent.L4D2Data.HitDelay = 0.275
             wepent.L4D2Data.Range = 65
-            wepent.L4D2Data.Damage = { 70, 75 }
-            wepent.L4D2Data.HitSound = {
-                "lambdaplayers/weapons/l4d2/melee/fireaxe/melee_axe_01.mp3",
-                "lambdaplayers/weapons/l4d2/melee/fireaxe/melee_axe_02.mp3",
-                "lambdaplayers/weapons/l4d2/melee/fireaxe/melee_axe_03.mp3"
-            }
+            wepent.L4D2Data.Damage = dmgTbl
+            wepent.L4D2Data.HitSound = hitSndTbl
             
             wepent:EmitSound( "lambdaplayers/weapons/l4d2/melee/melee_deploy_1.mp3", 60, 100, 1, CHAN_ITEM )
         end,

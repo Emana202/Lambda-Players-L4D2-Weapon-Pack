@@ -16,6 +16,7 @@ local trHull = util.TraceHull
 
 local meleeTrTbl = {}
 local fireBulletTbl = {}
+local defaultDmgForce = { Forward = 75, Right = -50, Up = 0 }
 
 LAMBDA_L4D2 = LAMBDA_L4D2 or {}
 
@@ -34,7 +35,7 @@ function LAMBDA_L4D2:InitializeWeapon( lambda, weapon, ignoreSkins )
     end
 
     local skinCount = weapon:SkinCount()
-    weapon:SetSkin( ( !ignoreSkins and skinCount > 1 ) and random( 0, skinCount - 1 ) or 0 )
+    weapon:SetSkin( ( !ignoreSkins and skinCount > 1 and random( 1, 3 ) == 1 ) and random( 0, skinCount - 1 ) or 0 )
 end
 
 local meleeSwingSounds = {
@@ -84,7 +85,10 @@ function LAMBDA_L4D2:SwingMeleeWeapon( lambda, weapon, target )
             dmginfo:SetInflictor( weapon )
             dmginfo:SetDamageType( weapon.L4D2Data.DamageType or DMG_SLASH )
             dmginfo:SetDamagePosition( tr.HitPos )
-            dmginfo:SetDamageForce( attackAng:Forward() * ( attackDmg * ( weapon.L4D2Data.DamageForce or 50 ) ) )
+            
+            local dmgForce = weapon.L4D2Data.DamageForce or defaultDmgForce
+            dmginfo:SetDamageForce( attackAng:Forward() * ( attackDmg * defaultDmgForce.Forward ) + attackAng:Right() * ( attackDmg * defaultDmgForce.Right ) + attackAng:Up() * ( attackDmg * defaultDmgForce.Up ) )
+
             hitEntity:DispatchTraceAttack( dmginfo, tr )
 
             local hitSound = weapon.L4D2Data.HitSound
