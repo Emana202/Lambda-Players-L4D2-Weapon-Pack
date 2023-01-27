@@ -1,5 +1,3 @@
-if ( CLIENT ) then return end
-
 local IsValid = IsValid
 local ipairs = ipairs
 local istable = istable
