@@ -21,6 +21,37 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
         bonemerge = true,
         islethal = true,
 
+        OnEquip = function( self, wepent )
+            self.l_WeaponUseCooldown = CurTime() + 2.5
+            wepent:EmitSound( "lambdaplayers/weapons/l4d2/melee/chainsaw/chainsaw_start_0" .. random( 1, 2 ) .. ".mp3", 80, nil, 0.66 )
+
+            local layerID = self:AddGestureSequence( self:LookupSequence( "reload_revolver_base_layer" ), true )
+            self:SetLayerCycle( layerID, 0.25 ); self:SetLayerBlendOut( layerID, 0.25 )
+
+            wepent.IsDeploying = true
+            wepent.AttackTime = CurTime() + 2.5
+
+            wepent.IdleSound = CreateSound( wepent, "lambdaplayers/weapons/l4d2/melee/chainsaw/chainsaw_idle_lp_01.wav" )
+            wepent.AttackSound = CreateSound( wepent, "lambdaplayers/weapons/l4d2/melee/chainsaw/chainsaw_high_speed_lp_01.wav" )
+
+            wepent:CallOnRemove( "LambdaChainsaw_KillSounds" .. wepent:EntIndex(), function() 
+                wepent:EmitSound( "lambdaplayers/weapons/l4d2/melee/chainsaw/chainsaw_die_01.mp3", 70 )
+                wepent:StopSound( "lambdaplayers/weapons/l4d2/melee/chainsaw/chainsaw_start_01.mp3" )
+                wepent:StopSound( "lambdaplayers/weapons/l4d2/melee/chainsaw/chainsaw_start_02.mp3" )
+
+                if wepent.IdleSound then wepent.IdleSound:Stop(); wepent.IdleSound = nil end
+                if wepent.AttackSound then wepent.AttackSound:Stop(); wepent.AttackSound = nil end 
+            end )
+
+            wepent:LambdaHookTick( "LambdaChainsaw_SoundThink", function() 
+                if !IsValid( self ) then return true end
+                if !self:GetIsDead() then return end
+
+                if wepent.IdleSound and wepent.IdleSound:IsPlaying() then wepent.IdleSound:Stop() end
+                if wepent.AttackSound and wepent.AttackSound:IsPlaying() then wepent.AttackSound:Stop() end 
+            end )
+        end,
+
         OnThink = function( self, wepent )
             if CurTime() > wepent.AttackTime then
                 wepent.IsDeploying = false
@@ -66,35 +97,13 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             end
         end,
 
-        OnEquip = function( self, wepent )
-            self.l_WeaponUseCooldown = CurTime() + 2.5
-            wepent:EmitSound( "lambdaplayers/weapons/l4d2/melee/chainsaw/chainsaw_start_0" .. random( 1, 2 ) .. ".mp3", 80, nil, 0.66 )
-
-            local layerID = self:AddGestureSequence( self:LookupSequence( "reload_revolver_base_layer" ), true )
-            self:SetLayerCycle( layerID, 0.25 ); self:SetLayerBlendOut( layerID, 0.25 )
-
-            wepent.IsDeploying = true
-            wepent.AttackTime = CurTime() + 2.5
-
-            wepent.IdleSound = CreateSound( wepent, "lambdaplayers/weapons/l4d2/melee/chainsaw/chainsaw_idle_lp_01.wav" )
-            wepent.AttackSound = CreateSound( wepent, "lambdaplayers/weapons/l4d2/melee/chainsaw/chainsaw_high_speed_lp_01.wav" )
-
-            wepent:CallOnRemove( "LambdaChainsaw_KillSounds" .. wepent:EntIndex(), function() 
-                wepent:EmitSound( "lambdaplayers/weapons/l4d2/melee/chainsaw/chainsaw_die_01.mp3", 70 )
-                wepent:StopSound( "lambdaplayers/weapons/l4d2/melee/chainsaw/chainsaw_start_01.mp3" )
-                wepent:StopSound( "lambdaplayers/weapons/l4d2/melee/chainsaw/chainsaw_start_02.mp3" )
-
-                if wepent.IdleSound then wepent.IdleSound:Stop(); wepent.IdleSound = nil end
-                if wepent.AttackSound then wepent.AttackSound:Stop(); wepent.AttackSound = nil end 
-            end )
-
-            wepent:LambdaHookTick( "LambdaChainsaw_SoundThink", function() 
-                if !IsValid( self ) then return true end
-                if !self:GetIsDead() then return end
-
-                if wepent.IdleSound and wepent.IdleSound:IsPlaying() then wepent.IdleSound:Stop() end
-                if wepent.AttackSound and wepent.AttackSound:IsPlaying() then wepent.AttackSound:Stop() end 
-            end )
+        OnDamage = function( self, wepent, dmginfo ) 
+            dmginfo:ScaleDamage( ( CurTime() <= wepent.AttackTime ) and 0.5 or 0.8 ) 
+        end,
+        
+        callback = function( self, wepent, target ) 
+            if !wepent.IsDeploying then wepent.AttackTime = CurTime() + Rand( 0.33, 0.66 )  end
+            return true 
         end,
 
         OnUnequip = function( self, wepent )
@@ -109,9 +118,6 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
 
             if wepent.IdleSound then wepent.IdleSound:Stop(); wepent.IdleSound = nil end
             if wepent.AttackSound then wepent.AttackSound:Stop(); wepent.AttackSound = nil end 
-        end,
-
-        OnDamage = function( self, wepent, dmginfo ) dmginfo:ScaleDamage( ( CurTime() <= wepent.AttackTime ) and 0.5 or 0.8 ) end,
-        callback = function( self, wepent, target ) wepent.AttackTime = CurTime() + Rand( 0.33, 0.66 ) return true end
+        end
     }
 } )
