@@ -2,17 +2,12 @@ local IsValid = IsValid
 local ipairs = ipairs
 local EffectData = EffectData
 local util_Effect = util.Effect
+local random = math.random
+local coroutine_wait = coroutine.wait
 
 local fireDamageTbl = { 8, 10 }
 local fireRateTbl = { 0.8, 1.2 }
-local deploySnds = {
-    { 0, "lambdaplayers/weapons/l4d2/shotgun_chrome/gunother/shotgun_deploy_1.mp3" }
-}
-local reloadSnds = {
-    { 0.84, "lambdaplayers/weapons/l4d2/shotgun_chrome/gunother/shotgun_load_shell_4.mp3" },
-    { 1.17, "lambdaplayers/weapons/l4d2/shotgun_chrome/gunother/shotgun_load_shell_2.mp3" },
-    { 2.41, "lambdaplayers/weapons/l4d2/shotgun_chrome/gunother/shotgun_pump_1.mp3" }
-}
+local deploySnds = { { 0, "lambdaplayers/weapons/l4d2/shotgun_chrome/gunother/shotgun_deploy_1.mp3" } }
 
 table.Merge( _LAMBDAPLAYERSWEAPONS, {
     l4d2_shotgun_chrome = {
@@ -25,21 +20,41 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
 
         clip = 8,
         islethal = true,
-        attackrange = 800,
+        attackrange = 1000,
         keepdistance = 400,
-        reloadtime = 3.4,
 
         OnReload = function( self, wepent )
-            local animID = self:LookupSequence( "reload_shotgun_base_layer" )
-            local reloadLayer = ( animID != -1 and self:AddGestureSequence( animID ) or self:AddGesture( ACT_HL2MP_GESTURE_RELOAD_SHOTGUN ) )
-            self:SetLayerPlaybackRate( reloadLayer, 0.8 )
+            self:RemoveGesture( ACT_HL2MP_GESTURE_RELOAD_AR2 )
+            local reloadLayer = self:AddGesture( ACT_HL2MP_GESTURE_RELOAD_AR2, true )
 
-            for _, v in ipairs( reloadSnds ) do
-                self:SimpleTimer( v[ 1 ], function()
-                    if !IsValid( wepent ) or self:GetWeaponName() != "l4d2_shotgun_chrome" then return end
-                    wepent:EmitSound( v[ 2 ], 65, 100, 1, CHAN_ITEM )
-                end )
-            end
+            self:SetIsReloading( true )
+            self:Thread( function()
+
+                coroutine_wait( 0.45 )
+                
+                while ( self.l_Clip < self.l_MaxClip ) do
+                    local ene = self:GetEnemy()
+                    if self.l_Clip > 0 and random( 1, 2 ) == 1 and self:InCombat() and self:IsInRange( ene, 512 ) and self:CanSee( ene ) then break end
+
+                    if !self:IsValidLayer( reloadLayer ) then
+                        reloadLayer = self:AddGesture( ACT_HL2MP_GESTURE_RELOAD_AR2, true )
+                    end
+                    self:SetLayerCycle( reloadLayer, 0.3 )
+                    self:SetLayerPlaybackRate( reloadLayer, 1.33 ) 
+
+                    self.l_Clip = self.l_Clip + 1
+                    wepent:EmitSound( "lambdaplayers/weapons/l4d2/shotgun_chrome/gunother/shotgun_load_shell_" .. random( 1, 2 ) .. ".mp3", 65, 100, 1, CHAN_ITEM )
+                    coroutine_wait( 0.475 )
+                end
+
+                coroutine_wait( 0.5 )
+
+                self:RemoveGesture( ACT_HL2MP_GESTURE_RELOAD_AR2 )
+                self:SetIsReloading( false )
+            
+            end, "L4D2_ShotgunReload" )
+
+            return true
         end,
 
         OnEquip = function( self, wepent )
