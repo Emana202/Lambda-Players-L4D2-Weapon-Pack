@@ -1,6 +1,6 @@
 local random = math.random
 
-local rofTbl = { 0.8, 0.9 }
+local rofTbl = { 0.8, 1.0 }
 local dmgTbl = { 40, 50 }
 local dmgForceTbl = { Forward = 150, Right = -75, Up = 125 }
 local hitSndTbl = {

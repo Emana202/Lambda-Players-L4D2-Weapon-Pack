@@ -1,4 +1,4 @@
-local rofTbl = { 0.625, 0.675 }
+local rofTbl = { 0.6, 0.8 }
 local dmgTbl = { 40, 50 }
 local hitSndTbl = {
     "lambdaplayers/weapons/l4d2/melee/machete/machete_impact_flesh1.mp3",

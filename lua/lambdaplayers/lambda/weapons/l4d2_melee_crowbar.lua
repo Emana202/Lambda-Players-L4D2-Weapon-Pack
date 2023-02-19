@@ -1,6 +1,6 @@
 local random = math.random
 
-local rofTbl = { 0.85, 1.0 }
+local rofTbl = { 0.85, 1.1 }
 local dmgTbl = { 45, 55 }
 local hitSndTbl = {
     "lambdaplayers/weapons/l4d2/melee/crowbar/crowbar_impact_flesh1.mp3",

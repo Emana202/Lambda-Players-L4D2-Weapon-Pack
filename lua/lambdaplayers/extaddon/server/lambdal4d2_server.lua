@@ -8,13 +8,13 @@ local random = math.random
 local Rand = math.Rand
 local Effect = util.Effect
 local EffectData = EffectData
-local fireSpreadVec = Vector()
-local trLine = util.TraceLine
-local trHull = util.TraceHull
+local TraceLine = util.TraceLine
+local ents_Create = ents.Create
 
 local meleeTrTbl = {}
 local fireBulletTbl = {}
 local defaultDmgForce = { Forward = 75, Right = -50, Up = 0 }
+local fireSpreadVec = Vector()
 
 LAMBDA_L4D2 = LAMBDA_L4D2 or {}
 
@@ -63,38 +63,52 @@ function LAMBDA_L4D2:SwingMeleeWeapon( lambda, weapon, target )
     lambda.l_WeaponUseCooldown = CurTime() + swingRate
 
     lambda:SimpleTimer( weapon.L4D2Data.HitDelay or 0.25, function()        
+        if !LambdaIsValid( target ) then return end
+        local targetPos = target:WorldSpaceCenter()
+
         local attackSrc = lambda:GetAttachmentPoint( "eyes" ).Pos
-        local attackAng = ( LambdaIsValid( target ) and ( target:WorldSpaceCenter() - attackSrc ):Angle() or lambda:GetAngles() )
+        local attackDist = weapon.L4D2Data.Range or 70
+        if attackSrc:DistToSqr( targetPos ) > ( attackDist * attackDist ) then return end
 
         meleeTrTbl.start = attackSrc
-        meleeTrTbl.endpos = ( attackSrc + attackAng:Forward() * ( weapon.L4D2Data.Range or 70 ) )
+        meleeTrTbl.endpos = targetPos
         meleeTrTbl.filter = { lambda, wepent }
         meleeTrTbl.mask = MASK_SHOT_HULL
 
-        local tr = trLine( meleeTrTbl )
-        local hitEntity = tr.Entity
-        if LambdaIsValid( hitEntity ) then
-            local attackDmg = weapon.L4D2Data.Damage or 50
-            if istable( attackDmg ) then attackDmg = random( attackDmg[ 1 ], attackDmg[ 2 ] ) end
+        local meleeTr = TraceLine( meleeTrTbl )
+        if meleeTr.Fraction < 1.0 and meleeTr.Entity != target then return end
 
-            local dmginfo = DamageInfo()
-            dmginfo:SetDamage( attackDmg )
-            dmginfo:SetAttacker( lambda )
-            dmginfo:SetInflictor( weapon )
-            dmginfo:SetDamageType( weapon.L4D2Data.DamageType or DMG_SLASH )
-            dmginfo:SetDamagePosition( tr.HitPos )
-            
-            local dmgForce = weapon.L4D2Data.DamageForce or defaultDmgForce
-            dmginfo:SetDamageForce( attackAng:Forward() * ( attackDmg * defaultDmgForce.Forward ) + attackAng:Right() * ( attackDmg * defaultDmgForce.Right ) + attackAng:Up() * ( attackDmg * defaultDmgForce.Up ) )
+        local attackDmg = weapon.L4D2Data.Damage or 50
+        if istable( attackDmg ) then attackDmg = random( attackDmg[ 1 ], attackDmg[ 2 ] ) end
 
-            hitEntity:DispatchTraceAttack( dmginfo, tr )
+        local dmginfo = DamageInfo()
+        dmginfo:SetDamage( attackDmg )
+        dmginfo:SetAttacker( lambda )
+        dmginfo:SetInflictor( weapon )
+        dmginfo:SetDamageType( weapon.L4D2Data.DamageType or DMG_SLASH )
+        dmginfo:SetDamagePosition( meleeTr.HitPos )
+        
+        local dmgForce = weapon.L4D2Data.DamageForce or defaultDmgForce
+        local dmgAng = ( meleeTr.HitPos - attackSrc ):Angle()
+        dmginfo:SetDamageForce( dmgAng:Forward() * ( attackDmg * defaultDmgForce.Forward ) + dmgAng:Right() * ( attackDmg * defaultDmgForce.Right ) + dmgAng:Up() * ( attackDmg * defaultDmgForce.Up ) )
 
-            local hitSound = weapon.L4D2Data.HitSound
-            if hitSound then 
-                if istable( hitSound ) then hitSound = hitSound[ random( #hitSound ) ] end
-                weapon:EmitSound( hitSound, 70, random( 98, 102 ), 1, CHAN_WEAPON ) 
-                EmitSound( meleeHitSounds[ random( #meleeHitSounds ) ], target:WorldSpaceCenter(), weapon:EntIndex(), CHAN_BODY, Rand( 0.4, 0.66 ), 60 )
-            end
+        local prevHealth = target:Health()
+        target:TakeDamageInfo( dmginfo )
+
+        if target:Health() < prevHealth then
+            local bloodParticle = ents_Create( "info_particle_system" )
+            bloodParticle:SetKeyValue( "effect_name", "blood_impact_red_01" )
+            bloodParticle:SetPos( meleeTr.HitPos )
+            bloodParticle:Spawn()
+            bloodParticle:Fire( "Start" )
+            bloodParticle:Fire( "Kill", "", 0.1 )
+        end
+
+        local hitSound = weapon.L4D2Data.HitSound
+        if hitSound then 
+            if istable( hitSound ) then hitSound = hitSound[ random( #hitSound ) ] end
+            weapon:EmitSound( hitSound, 70, random( 98, 102 ), 1, CHAN_WEAPON ) 
+            EmitSound( meleeHitSounds[ random( #meleeHitSounds ) ], target:WorldSpaceCenter(), weapon:EntIndex(), CHAN_BODY, Rand( 0.4, 0.66 ), 60 )
         end
     end)
 
@@ -136,7 +150,7 @@ function LAMBDA_L4D2:FireWeapon( lambda, weapon, target )
     		    effectData:SetEntity( weapon )
     		    effectData:SetOrigin( shellData.Pos )
     		    effectData:SetAngles( shellData.Ang )
-    		    Effect( fireShell, effectData )
+    		    util_Effect( fireShell, effectData )
     		end
     	end
     end

@@ -1,4 +1,4 @@
-local rofTbl = { 0.88, 1.0 }
+local rofTbl = { 0.88, 1.1 }
 local swingSndTbl = {
     "lambdaplayers/weapons/l4d2/melee/pitchfork/pitchfork_swing_miss1.mp3",
     "lambdaplayers/weapons/l4d2/melee/pitchfork/pitchfork_swing_miss2.mp3"
