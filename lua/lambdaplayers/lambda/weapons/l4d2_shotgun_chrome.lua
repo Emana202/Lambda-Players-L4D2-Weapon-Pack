@@ -57,7 +57,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             return true
         end,
 
-        OnEquip = function( self, wepent )
+        OnDeploy = function( self, wepent )
             wepent.L4D2Data = {}
             wepent.L4D2Data.Damage = fireDamageTbl
             wepent.L4D2Data.Spread = 0.125
@@ -72,7 +72,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             LAMBDA_L4D2:InitializeWeapon( self, wepent )
         end,
 
-        callback = function( self, wepent, target )
+        OnAttack = function( self, wepent, target )
             if LAMBDA_L4D2:FireWeapon( self, wepent, target ) != true then
                 self:SimpleTimer( 0.45, function()
                     if self:GetWeaponName() != "l4d2_shotgun_chrome" or !IsValid( wepent ) then return end

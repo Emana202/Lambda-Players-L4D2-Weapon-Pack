@@ -56,11 +56,11 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             { 1.95, "lambdaplayers/weapons/l4d2/grenade_launcher/grenadeother/grenade_launcher_actionclosed.mp3" }
         },
 
-        OnEquip = function( lambda, wepent )
+        OnDeploy = function( lambda, wepent )
             wepent:EmitSound( "lambdaplayers/weapons/l4d2/grenade_launcher/grenadeother/grenade_launcher_deploy_1.mp3", 65, 100, 1, CHAN_ITEM )
         end,
 
-        callback = function( lambda, wepent, target )
+        OnAttack = function( lambda, wepent, target )
             if lambda.l_Clip <= 0 then lambda:ReloadWeapon() return true end
 
             local muzzleData = wepent:GetAttachment( wepent:LookupAttachment( "muzzle" ) )

@@ -64,7 +64,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             return true
         end,
 
-        OnEquip = function( self, wepent )
+        OnDeploy = function( self, wepent )
             wepent.L4D2Data = {}
             wepent.L4D2Data.Damage = fireDamageTbl
             wepent.L4D2Data.Spread = 0.125
@@ -79,7 +79,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             LAMBDA_L4D2:InitializeWeapon( self, wepent )
         end,
 
-        callback = function( self, wepent, target )
+        OnAttack = function( self, wepent, target )
             LAMBDA_L4D2:FireWeapon( self, wepent, target )
             return true
         end

@@ -30,7 +30,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             { 1.9, "lambdaplayers/weapons/l4d2/rifle_ak47/gunother/rifle_slideforward.mp3" },
         },
 
-        OnEquip = function( self, wepent )
+        OnDeploy = function( self, wepent )
             wepent.L4D2Data = {}
             wepent.L4D2Data.Damage = fireDamageTbl
             wepent.L4D2Data.Spread = 0.1125
@@ -43,7 +43,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             LAMBDA_L4D2:InitializeWeapon( self, wepent )
         end,
 
-        callback = function( self, wepent, target )
+        OnAttack = function( self, wepent, target )
             LAMBDA_L4D2:FireWeapon( self, wepent, target )
             return true
         end

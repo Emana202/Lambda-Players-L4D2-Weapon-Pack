@@ -20,7 +20,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
         attackrange = 1500,
         keepdistance = 550,
 
-        OnEquip = function( self, wepent )
+        OnDeploy = function( self, wepent )
             wepent.L4D2Data = {}
             wepent.L4D2Data.Damage = fireDamageTbl
             wepent.L4D2Data.Spread = 0.133
@@ -38,12 +38,12 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             LAMBDA_L4D2:InitializeWeapon( self, wepent )
         end,
 
-        OnUnequip = function( self, wepent )
+        OnHolster = function( self, wepent )
             self.ReloadWeapon = self.OldReloadWeapon
             self.OldReloadWeapon = nil
         end,
 
-        callback = function( self, wepent, target )
+        OnAttack = function( self, wepent, target )
             if self.l_Clip <= 0 then 
                 net.Start( "lambdaplayers_createclientsidedroppedweapon" )
                     net.WriteEntity( wepent )

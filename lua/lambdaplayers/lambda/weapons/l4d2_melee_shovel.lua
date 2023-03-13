@@ -24,7 +24,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
         bonemerge = true,
         islethal = true,
 
-        OnEquip = function( self, wepent )
+        OnDeploy = function( self, wepent )
             wepent.L4D2Data = {}
             wepent.L4D2Data.Animation = ACT_HL2MP_GESTURE_RANGE_ATTACK_MELEE2
             wepent.L4D2Data.RateOfFire = rofTbl
@@ -38,7 +38,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             wepent:EmitSound( "lambdaplayers/weapons/l4d2/melee/melee_deploy_1.mp3", 60, 100, 1, CHAN_ITEM )
         end,
 
-        callback = function( self, wepent, target )
+        OnAttack = function( self, wepent, target )
             LAMBDA_L4D2:SwingMeleeWeapon( self, wepent, target )
             return true
         end

@@ -99,9 +99,12 @@ function LAMBDA_L4D2:SwingMeleeWeapon( lambda, weapon, target )
             local bloodParticle = ents_Create( "info_particle_system" )
             bloodParticle:SetKeyValue( "effect_name", "blood_impact_red_01" )
             bloodParticle:SetPos( meleeTr.HitPos )
+            bloodParticle:SetAngles( dmgAng )
+            bloodParticle:SetParent( target )
             bloodParticle:Spawn()
+            bloodParticle:Activate()
             bloodParticle:Fire( "Start" )
-            bloodParticle:Fire( "Kill", "", 0.1 )
+            bloodParticle:Fire( "Kill", nil, 0.4 )
         end
 
         local hitSound = weapon.L4D2Data.HitSound

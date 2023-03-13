@@ -31,7 +31,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             { 2.533, "lambdaplayers/weapons/l4d2/rifle_desert/gunother/rifle_slideforward_1.mp3" }
         },
 
-        OnEquip = function( self, wepent )
+        OnDeploy = function( self, wepent )
             wepent.L4D2Data = {}
             wepent.L4D2Data.Damage = fireDamageTbl
             wepent.L4D2Data.Spread = 0.08
@@ -44,7 +44,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             LAMBDA_L4D2:InitializeWeapon( self, wepent )
         end,
 
-        callback = function( self, wepent, target )
+        OnAttack = function( self, wepent, target )
             if LAMBDA_L4D2:FireWeapon( self, wepent, target ) != true then
                 self:NamedTimer( "DesertRifle_BurstFire", 0.07, 2, function() LAMBDA_L4D2:FireWeapon( self, wepent, target ) end )
             end
