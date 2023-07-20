@@ -6,6 +6,7 @@ local EffectData = EffectData
 local util_Effect = util.Effect
 local SpriteTrail = util.SpriteTrail
 local BlastDamage = util.BlastDamage
+local SafeRemoveEntityDelayed = SafeRemoveEntityDelayed
 local smokeColor = Color( 100, 100, 100, 100 )
 
 local function GrenadeOnTouch( self, ent )
@@ -26,6 +27,12 @@ local function GrenadeOnTouch( self, ent )
         effectData = EffectData()
         effectData:SetOrigin( projPos )
         util_Effect( "HelicopterMegaBomb", effectData )
+    end
+
+    local trail = self.l_Trail
+    if IsValid( trail ) then
+        trail:SetParent()
+        SafeRemoveEntityDelayed( trail, 1.5 )
     end
 
     self:EmitSound( "lambdaplayers/weapons/l4d2/grenade_launcher/grenadefire/grenade_launcher_explode_" .. random( 1, 2 ) .. ".mp3", 140, nil, nil, CHAN_STATIC )
@@ -89,7 +96,10 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             proj:SetSolid( SOLID_BBOX )
             proj:SetAngles( velAng )
             proj:SetVelocity( velAng:Forward() * 1400 )
-            SpriteTrail( proj, 0, smokeColor, true, 8, 8, 1, 0.025, "trails/smoke" )
+
+            proj.l_Trail = SpriteTrail( proj, 0, smokeColor, true, 10, 5, 1, 0.03, "trails/smoke" )
+            proj.l_UseLambdaDmgModifier = true
+            proj.l_killiconname = wepent.l_killiconname
 
             return true
         end
