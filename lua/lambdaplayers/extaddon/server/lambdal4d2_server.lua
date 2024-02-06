@@ -48,9 +48,22 @@ local meleeHitSounds = {
     Sound( "lambdaplayers/weapons/l4d2/melee/hitsounds/zombie_blood_spray_05.mp3" ),
     Sound( "lambdaplayers/weapons/l4d2/melee/hitsounds/zombie_blood_spray_06.mp3" )
 }
+local meleeExtraAnims = {
+    [ ACT_HL2MP_GESTURE_RANGE_ATTACK_MELEE ] = { ACT_VM_SWINGMISS, ACT_VM_MISSRIGHT, ACT_VM_MISSLEFT },
+    [ ACT_HL2MP_GESTURE_RANGE_ATTACK_MELEE2 ] = { ACT_VM_SWINGHARD, ACT_VM_MISSRIGHT2, ACT_VM_MISSLEFT2 }
+}
 function LAMBDA_L4D2:SwingMeleeWeapon( lambda, weapon, target )
     local swingAnim = weapon.L4D2Data.Animation
-    if swingAnim then lambda:RemoveGesture( swingAnim ); lambda:AddGesture( swingAnim ) end
+    if swingAnim then
+        local animTbl = meleeExtraAnims[ swingAnim ]
+        if !lambda.l_HasExtendedAnims or !animTbl then
+            lambda:RemoveGesture( swingAnim )
+            lambda:AddGesture( swingAnim )
+        else
+            for _, anim in ipairs( animTbl ) do lambda:RemoveGesture( anim ) end
+            lambda:SetLayerPlaybackRate( lambda:AddGesture( animTbl[ random( #animTbl ) ] ), 1.5 )
+        end
+    end
 
     local swingSnd = weapon.L4D2Data.Sound or meleeSwingSounds
     if swingSnd != false then 
